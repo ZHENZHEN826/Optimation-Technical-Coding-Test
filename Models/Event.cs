@@ -28,8 +28,6 @@ namespace Optimation_Technical_Coding_Test.Models
             Total = numbers[0];
             Gst = numbers[1];
             TotalExcludingGst = numbers[2];
-            System.Console.WriteLine(strings[0]);
-            System.Console.WriteLine(numbers[0]);
         }
     }
 }

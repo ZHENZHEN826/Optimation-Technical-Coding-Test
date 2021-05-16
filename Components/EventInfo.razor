@@ -1,0 +1,53 @@
+@using Microsoft.AspNetCore.Components.Web
+@using Microsoft.AspNetCore.Components.Forms
+@using Optimation_Technical_Coding_Test.Models
+@using Optimation_Technical_Coding_Test.Services
+@inject ExtractXmlService XmlService
+
+
+<h3>Extract event from the text</h3>
+
+<EditForm Model="@formModel" OnValidSubmit=@HandleValidSubmit>
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+    <InputTextArea id="message" @bind-Value="formModel.Message" rows="10" cols="100"></InputTextArea>
+    <br><br>
+    @* <input type="submit" value="Submit" class="submit" /> *@
+    <button type="submit" class="btn btn-primary">Submit</button>
+</EditForm>
+
+<p>Click the "Submit" button and the event details will be extracted.</p>
+
+
+<div>
+    <h3>Event details</h3>
+
+    <ul>
+        <li>Date: @_event.Date</li>
+        <li>Vendor: @_event.Vendor</li>
+        <li>Description: @_event.Description</li>
+        <li>Cost Centre: @_event.CostCentre</li>
+        <li>Payment Method: @_event.PaymentMethod</li>
+        <li>GST: @_event.Gst</li>
+        <li>Total excluding GST: @_event.TotalExcludingGst</li>
+        <li>Total: @_event.Total</li>
+    </ul>
+</div>
+
+
+@code
+{
+    Event _event = new();
+
+    private Form formModel = new();
+
+    void HandleValidSubmit()
+    {
+        XmlService.readText(formModel.Message);
+        _event = XmlService.GetEvent();
+    }
+
+
+
+
+}

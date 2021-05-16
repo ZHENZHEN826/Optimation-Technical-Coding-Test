@@ -25,6 +25,7 @@ namespace Optimation_Technical_Coding_Test
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddRazorPages();
+            services.AddServerSideBlazor();
             services.AddTransient<ExtractXmlService>();
         }
 
@@ -52,6 +53,7 @@ namespace Optimation_Technical_Coding_Test
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapRazorPages();
+                endpoints.MapBlazorHub();
             });
         }
     }
