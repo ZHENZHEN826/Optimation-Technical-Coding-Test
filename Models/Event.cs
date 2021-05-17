@@ -12,15 +12,20 @@ namespace Optimation_Technical_Coding_Test.Models
         public double Total { get; set; }
         public double Gst { get; set; }
         public double TotalExcludingGst { get; set; }
+        public bool IsValid { get; set; }
+        public string ValidityMessage { get; set; }
 
         public string[] openingTags = new string[] { "<date>", "<vendor>", "<description>", "<cost_centre>", "<payment_method>", "<total>" };
         public string[] closingTags = new string[] { "</date>", "</vendor>", "</description>", "</cost_centre>", "</payment_method>", "</total>" };
 
-        public Event() { }
+        public Event()
+        {
+            IsValid = false;
+        }
 
         public void SetFields(List<string> strings, List<double> numbers)
         {
-            this.Date = strings[0];
+            Date = strings[0];
             Vendor = strings[1];
             Description = strings[2];
             CostCentre = strings[3];

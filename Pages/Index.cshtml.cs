@@ -24,7 +24,7 @@ namespace Optimation_Technical_Coding_Test.Pages
 
         public void OnGet()
         {
-            _event = _xmlService.GetEvent();
+            // _event = _xmlService.GetEvent();
         }
     }
 }

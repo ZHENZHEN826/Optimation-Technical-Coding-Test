@@ -12,14 +12,17 @@
     <ValidationSummary />
     <InputTextArea id="message" @bind-Value="formModel.Message" rows="10" cols="100"></InputTextArea>
     <br><br>
-    @* <input type="submit" value="Submit" class="submit" /> *@
     <button type="submit" class="btn btn-primary">Submit</button>
 </EditForm>
 
-<p>Click the "Submit" button and the event details will be extracted.</p>
+@if (_event.ValidityMessage != "")
+{
+    <p>@_event.ValidityMessage</p>
+}
 
-
-<div>
+@if (_event.IsValid)
+{
+    <div>
     <h3>Event details</h3>
 
     <ul>
@@ -33,6 +36,8 @@
         <li>Total: @_event.Total</li>
     </ul>
 </div>
+}
+
 
 
 @code
@@ -46,8 +51,4 @@
         XmlService.readText(formModel.Message);
         _event = XmlService.GetEvent();
     }
-
-
-
-
 }

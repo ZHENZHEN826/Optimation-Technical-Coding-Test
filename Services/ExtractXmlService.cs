@@ -24,17 +24,10 @@ namespace Optimation_Technical_Coding_Test.Services
 
         public void updateEvent()
         {
-            ExtractXmlData();
-            if (_numResult.Count == 0)
-            {
-                // reject the message
-            }
-            else
-            {
-                // calculate gst, excluding gst
-                CalculateGst();
-            }
-            _event.SetFields(_strResult, _numResult);
+            ExtractXmlData(); // update _strResult, _numResult
+            ErrorHandling(); // check if request is valid
+            CalculateGst(); // calculate gst, excluding gst
+            _event.SetFields(_strResult, _numResult); // update _event
         }
 
         public void ExtractXmlData()
@@ -42,26 +35,30 @@ namespace Optimation_Technical_Coding_Test.Services
             string[] openingTags = _event.openingTags;
             string[] closingTags = _event.closingTags;
 
-            string[] result = new string[openingTags.Length];
-
             _strResult.Clear();
             _numResult.Clear();
+            _event.IsValid = true;
 
             for (int index = 0; index < openingTags.Length; index++)
             {
                 string openingTag = openingTags[index];
                 string closingtag = closingTags[index];
 
-                // Now assume tags always exits
-                // Need to check the case tag not exits
-                int startingIndex = _rawText.IndexOf(openingTag) + openingTag.Length;
+                int start = _rawText.IndexOf(openingTag);
+                int startingIndex = start + openingTag.Length;
                 int endingIndex = _rawText.IndexOf(closingtag);
                 int infoLength = endingIndex - startingIndex;
+
+                if ((start >= 0 & endingIndex < 0) | (start < 0 & endingIndex >= 0))
+                {
+                    // opening/closing tags not match
+                    _event.IsValid = false;
+                    _event.ValidityMessage = "Error: Opening and Closing tags should match.";
+                }
 
                 if (startingIndex >= 0 & endingIndex >= 0 & infoLength >= 0)
                 {
                     string info = _rawText.Substring(startingIndex, infoLength);
-                    System.Console.WriteLine(info);
                     if (openingTag == "<total>")
                     {
                         _numResult.Add(Convert.ToDouble(info));
@@ -81,10 +78,25 @@ namespace Optimation_Technical_Coding_Test.Services
                     {
                         _strResult.Add("UNKNOWN");
                     }
+
                 }
             }
         }
 
+        public void ErrorHandling()
+        {
+            if (Double.IsNaN(_numResult[0]))
+            {
+                // <Total> tag is not found, reject the message
+                _event.IsValid = false;
+                _event.ValidityMessage = "Error: Missing <total> tag.";
+            }
+
+            if (_event.IsValid)
+            {
+                _event.ValidityMessage = "Success!";
+            }
+        }
         public void CalculateGst()
         {
             double total = _numResult[0];

@@ -9,21 +9,6 @@
     <h1 class="display-4">Welcome</h1>
 </div>
 
-@* <div>
-    <h3>Event details</h3>
-
-    <ul>
-    <li>Date: @Model._event.Date</li>
-    <li>Vendor: @Model._event.Vendor</li>
-    <li>Description: @Model._event.Description</li>
-    <li>Cost Centre: @Model._event.CostCentre</li>
-    <li>Payment Method: @Model._event.PaymentMethod</li>
-    <li>GST: @Model._event.Gst</li>
-    <li>Total excluding GST: @Model._event.TotalExcludingGst</li>
-    <li>Total: @Model._event.Total</li>
-    </ul>
-    </div> *@
-
 @(await Html.RenderComponentAsync<EventInfo>(RenderMode.ServerPrerendered))
 
 <script src="_framework/blazor.server.js"></script>
